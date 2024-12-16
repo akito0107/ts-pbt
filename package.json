@@ -2,6 +2,7 @@
   "name": "ts-iter",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "node --experimental-strip-types --test src/*.test.ts"
   },
@@ -13,5 +14,8 @@
     "@types/node": "^22.10.1",
     "fast-check": "^3.23.1",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "fp-ts": "^2.16.9"
   }
 }

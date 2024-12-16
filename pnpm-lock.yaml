@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      fp-ts:
+        specifier: ^2.16.9
+        version: 2.16.9
     devDependencies:
       '@types/node':
         specifier: ^22.10.1
@@ -26,6 +30,9 @@ packages:
   fast-check@3.23.1:
     resolution: {integrity: sha512-u/MudsoQEgBUZgR5N1v87vEgybeVYus9VnDVaIkxkkGP2jt54naghQ3PCQHJiogS8U/GavZCUPFfx3Xkp+NaHw==}
     engines: {node: '>=8.0.0'}
+
+  fp-ts@2.16.9:
+    resolution: {integrity: sha512-+I2+FnVB+tVaxcYyQkHUq7ZdKScaBlX53A41mxQtpIccsfyv8PzdzP7fzp2AY832T4aoK6UZ5WRX/ebGd8uZuQ==}
 
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
@@ -47,6 +54,8 @@ snapshots:
   fast-check@3.23.1:
     dependencies:
       pure-rand: 6.1.0
+
+  fp-ts@2.16.9: {}
 
   pure-rand@6.1.0: {}
 
