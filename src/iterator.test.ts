@@ -1,5 +1,5 @@
 import { test, type TestContext } from 'node:test';
-import { SimpleDataSource } from "./iterator.ts";
+import {AsyncDataCursor, SimpleDataSource} from "./iterator.ts";
 import assert from 'node:assert';
 import fc from 'fast-check';
 
@@ -70,6 +70,29 @@ test('SimpleDataSource: fetch all data (no PBT)', async (t: TestContext) => {
             cursor = dataSource.cursor;
             if (cursor != null) {
                 await dataSource.load(cursor)
+            }
+        }
+    }
+
+    assert.deepStrictEqual(arr, data);
+});
+
+test('AsyncIterator: fetch all data', async (t: TestContext) => {
+    const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+
+    let dataSource = new SimpleDataSource({ data, batchSize: 2 });
+    const iter = new AsyncDataCursor(dataSource);
+
+    let arr: number[] = []
+    let cursor;
+
+    while (await iter.hasNext()) {
+        arr = [...arr, await iter.next()];
+
+        if (!(await iter.hasNext())) {
+            cursor = iter.getAfterCursor();
+            if (cursor != null) {
+                await iter.loadNext(cursor)
             }
         }
     }

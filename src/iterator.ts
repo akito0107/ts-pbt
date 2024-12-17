@@ -1,6 +1,10 @@
 const DATA = Array.from({length: 100}, () => Math.floor(Math.random() * 100));
 
 /**
+ * WIP
+ */
+
+/**
  * demo用のデータソース
  * DBや大量のデータをフェッチしてくるWeb APIなどが想定
  * データの総量は100件を想定しているが（パラメータで変更可能）一気には取得してこずに、batchSize件ずつ取得してくる。
@@ -145,12 +149,17 @@ export class AsyncDataCursor {
         this.source = source;
     }
 
-    async computeNext(): Promise<number> {
-        const result = await this.source.next();
-        if (this.source.cursor == null) {
+    async computeNext(): Promise<number | null> {
+        if (!await this.source.hasNext() && (this.source.cursor == null)) {
             this.state = DONE;
+            return null;
         }
-        return result;
+
+        if (!await this.source.hasNext()) {
+            this.state = NOT_READY;
+            return null;
+        }
+        return await this.source.next();
     }
 
     async tryComputeNext(): Promise<boolean> {
