@@ -1,5 +1,5 @@
-import {test, type TestContext} from 'node:test';
-import {SimpleDataSource} from "./iterator.ts";
+import { test, type TestContext } from 'node:test';
+import { SimpleDataSource } from "./iterator.ts";
 import assert from 'node:assert';
 import fc from 'fast-check';
 
@@ -11,7 +11,7 @@ test('SimpleDataSource: fetch all data', async (t: TestContext) => {
             // 入力に関する事前条件を設定できる
             fc.pre(size > 0 && src.length >= size);
 
-            let dataSource = new SimpleDataSource({data: src, batchSize: size});
+            let dataSource = new SimpleDataSource({ data: src, batchSize: size });
             let arr: number[] = []
             let cursor;
             while (await dataSource.hasNext()) {
@@ -39,7 +39,7 @@ test('SimpleDataSource: fetch all data with cursor', async (t: TestContext) => {
             // 入力に関する事前条件を設定できる
             fc.pre(size > 0 && src.length >= size);
 
-            let dataSource = new SimpleDataSource({data: src, batchSize: size});
+            let dataSource = new SimpleDataSource({ data: src, batchSize: size });
             let arr: number[] = []
             let cursor;
             while (await dataSource.hasNext()) {
@@ -57,9 +57,9 @@ test('SimpleDataSource: fetch all data with cursor', async (t: TestContext) => {
 });
 
 test('SimpleDataSource: fetch all data (no PBT)', async (t: TestContext) => {
-    const data = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+    const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
 
-    let dataSource = new SimpleDataSource({data, batchSize: 2});
+    let dataSource = new SimpleDataSource({ data, batchSize: 2 });
     let arr: number[] = []
     let cursor;
     while (await dataSource.hasNext()) {

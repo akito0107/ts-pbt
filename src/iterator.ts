@@ -128,18 +128,29 @@ const FAILED = 'failed';
 type State = typeof READY | typeof NOT_READY | typeof DONE | typeof FAILED;
 
 
-/*
-class AsyncDataCursor {
-    private cursor: string | null = null;
+/**
+ *
+ * 元ネタ
+    https://github.com/google/guava/blob/master/guava/src/com/google/common/collect/AbstractIterator.java
+    https://github.com/googleapis/java-datastore/blob/12b8f125baa5a3324e7d5a50a89d427d18f9c2d1/google-cloud-datastore/src/main/java/com/google/cloud/datastore/QueryResultsImpl.java
+ * バグがある!
+*/
+export class AsyncDataCursor {
     private state: State = NOT_READY;
-    private nextValue: T | null = null;
+    private nextValue: number | null = null;
 
-    constructor() {
+    private source : SimpleDataSource;
+
+    constructor(source: SimpleDataSource) {
+        this.source = source;
     }
 
-    async computeNext(): Promise<T> {
-        this.state = DONE;
-        return this.data[0];
+    async computeNext(): Promise<number> {
+        const result = await this.source.next();
+        if (this.source.cursor == null) {
+            this.state = DONE;
+        }
+        return result;
     }
 
     async tryComputeNext(): Promise<boolean> {
@@ -153,8 +164,13 @@ class AsyncDataCursor {
         return true;
     }
 
-    async next(): Promise<T> {
-        if (!this.hasNext()) {
+    async loadNext(cursor: [number, number]) {
+        this.state = NOT_READY;
+        await this.source.load(cursor);
+    }
+
+    async next(): Promise<number> {
+        if (!await this.hasNext()) {
             throw new Error('no more elements');
         }
         this.state = NOT_READY;
@@ -176,12 +192,7 @@ class AsyncDataCursor {
         }
     }
 
-    getAfterCursor(): string | null {
-        return this.cursor;
-    }
-
-    private endOfData() {
-        this.state = DONE;
+    getAfterCursor(): [number, number] | null {
+        return this.source.cursor;
     }
 }
- */
